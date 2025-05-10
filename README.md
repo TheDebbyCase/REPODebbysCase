@@ -1,4 +1,4 @@
-# WILDCARD REPO
+# Debby's Case
 
 Repository for Debby's Case, a mod that aims to add various things with the goal to fit the original vibe of the game!
 
