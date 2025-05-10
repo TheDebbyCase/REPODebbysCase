@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<OutputType>Library</OutputType>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<OutputPath>Builds\</OutputPath>
+		<AssemblyTitle>REPOWildCardMod</AssemblyTitle>
+		<Company>Scan Computers</Company>
+		<Product>REPOWildCardMod</Product>
+		<Copyright>Copyright © Scan Computers 2025</Copyright>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<FileVersion>1.0.0.0</FileVersion>
+		<UnityProjectPath>$(MSBuildProjectDirectory)\..\..\..\Unity\Repo Template</UnityProjectPath>
+		<UnityInstallRootPath>D:\Unity\Unity Editor</UnityInstallRootPath>
+		<BaseOutputPath>D:\Stuff\REPO\Project\REPOWildCardMod\Builds</BaseOutputPath>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);NCP0001</MSBuildWarningsAsMessages>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugType>embedded</DebugType>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>embedded</DebugType>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="BepInEx.Core" Version="5.4.21" />
+		<PackageReference Include="BepInEx.PluginInfoProps" Version="2.1.0" />
+		<PackageReference Include="Facepunch.Steamworks" Version="2.3.3" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="R.E.P.O.GameLibs.Steam" Version="0.1.2-ngd.0" />
+		<PackageReference Include="System.Collections" Version="4.3.0" />
+		<PackageReference Include="System.Collections.Immutable" Version="9.0.0" />
+		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+		<PackageReference Include="Zehs.REPOLib" Version="2.1.0" Publicize="true" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="UnityEditor">
+	    <HintPath>..\..\..\..\Unity\Unity Editor\2022.3.21f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+	<Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
+		<Exec Command="netcode-patch -nv 1.5.2 &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')" />
+	</Target>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="cmd.exe /c &quot;D:\Stuff\REPO\Project\REPOWildCardMod\Builds\netstandard2.1\MoveDLL.bat&quot;" />
+	</Target>
+</Project>
