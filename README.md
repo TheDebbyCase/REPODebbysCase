@@ -19,7 +19,7 @@ or the GitHub page [here](https://github.com/TheDebbyCase/REPODebbysCase)!
 	My own original design!  
 	You aren't the only ones here
 
-	![Preview](https://raw.githubusercontent.com/TheDebbyCase/REPODebbysCase/main/Images/ScavBotPreview.png)
+	![Preview](https://raw.githubusercontent.com/TheDebbyCase/REPODebbysCase/master/Images/ScavBotPreview.png)
 	
 	</details>
 	
