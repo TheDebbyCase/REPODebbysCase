@@ -6,7 +6,7 @@ using System.Reflection;
 using System.IO;
 using REPODebbysCase.Config;
 using HarmonyLib;
-using REPOLib.Modules;
+using System.Collections.Generic;
 namespace REPODebbysCase
 {
     [BepInPlugin(modGUID, modName, modVersion)]
@@ -20,6 +20,7 @@ namespace REPODebbysCase
         internal ManualLogSource log = null!;
         public static DebbysCase instance;
         internal DebbysCaseConfig ModConfig { get; private set; } = null!;
+        public List<EnemySetup> enemiesList = new List<EnemySetup>();
         public void Awake()
         {
             if (instance == null)
@@ -49,29 +50,31 @@ namespace REPODebbysCase
                 }
             }
             PropogateLists();
+            ModConfig = new DebbysCaseConfig(base.Config, enemiesList);
             HandleContent();
-            DoPatches();
+            //DoPatches();
             log.LogInfo($"{modName} Successfully Loaded");
         }
         public void PropogateLists()
         {
-            AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "wildcardmod"));
+            AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "debbyscase"));
             string[] allAssetPaths = bundle.GetAllAssetNames();
             for (int i = 0; i < allAssetPaths.Length; i++)
             {
                 string assetPath = allAssetPaths[i][..allAssetPaths[i].LastIndexOf("/")];
                 switch (assetPath)
                 {
-                    case "assets/Debbys Case/resources/valuables":
+                    //case "assets/debbys case/resources/valuables":
+                    //    {
+                    //        break;
+                    //    }
+                    //case "assets/debbys case/resources/items":
+                    //    {
+                    //        break;
+                    //    }
+                    case "assets/debbys case/resources/enemies":
                         {
-                            break;
-                        }
-                    case "assets/Debbys Case/resources/items":
-                        {
-                            break;
-                        }
-                    case "assets/Debbys Case/resources/enemies":
-                        {
+                            enemiesList.Add(bundle.LoadAsset<EnemySetup>(allAssetPaths[i]));
                             break;
                         }
                     default:
@@ -84,24 +87,23 @@ namespace REPODebbysCase
         }
         public void HandleContent()
         {
-            ModConfig = new DebbysCaseConfig(base.Config);
-            //HandleItems();
+            HandleEnemies();
         }
-        //public void HandleItems()
-        //{
-        //    for (int i = 0; i < itemList.Count; i++)
-        //    {
-        //        if (i >= ModConfig.isItemEnabled.Count || ModConfig.isItemEnabled[i].Value)
-        //        {
-        //            Items.RegisterItem(itemList[i]);
-        //            log.LogDebug($"{itemList[i].name} item was loaded!");
-        //        }
-        //        else
-        //        {
-        //            log.LogInfo($"{itemList[i].name} item was disabled!");
-        //        }
-        //    }
-        //}
+        public void HandleEnemies()
+        {
+            for (int i = 0; i < enemiesList.Count; i++)
+            {
+                if (ModConfig.isEnemyEnabled[i].Value)
+                {
+                    REPOLib.Modules.Enemies.RegisterEnemy(enemiesList[i]);
+                    log.LogDebug($"{enemiesList[i].name} enemy was loaded!");
+                }
+                else
+                {
+                    log.LogInfo($"{enemiesList[i].name} enemy was disabled!");
+                }
+            }
+        }
         public void DoPatches()
         {
             log.LogDebug("Patching Game");

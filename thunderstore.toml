@@ -6,12 +6,11 @@ namespace = "deB"
 name = "Debbys_Case"
 versionNumber = "0.0.1"
 description = "Adds various content supposed to fit the vibe of REPO"
-websiteUrl = "https://github.com/TheDebbyCase/REPOWildCardMod"
+websiteUrl = "https://github.com/TheDebbyCase/REPODebbysCase"
 containsNsfwContent = false
 [package.dependencies]
 BepInEx-BepInExPack = "5.4.2100"
 Zehs-REPOLib = "2.1.0"
-DaXcess-FixPluginTypesSerialization = "1.0.0"
 
 [build]
 icon = "./icon.png"
@@ -37,6 +36,6 @@ target = "./LICENSE"
 [publish]
 communities = ["repo"]
 [publish.categories]
-repo = ["mods", "items", "monsters", "serverside", "clientside"]
+repo = ["mods", "monsters", "serverside", "clientside"]
 
 
