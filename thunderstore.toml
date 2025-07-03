@@ -18,12 +18,12 @@ readme = "./README.md"
 outdir = "."
 
 [[build.copy]]
-source = "./Debbys Case/Builds/netstandard2.1/REPODebbyCase.dll"
-target = "BepInEx/plugins/Debbys Case/REPODebbyCase.dll"
+source = "./Debbys Case/Builds/netstandard2.1/REPODebbysCase.dll"
+target = "BepInEx/plugins/Debbys Case/REPODebbysCase.dll"
 
 [[build.copy]]
-source = "./Debbys Case/Builds/debbycase"
-target = "BepInEx/plugins/Debbys Case/debbycase"
+source = "./Debbys Case/Builds/debbyscase"
+target = "BepInEx/plugins/Debbys Case/debbyscase"
 
 [[build.copy]]
 source = "./CHANGELOG.md"
