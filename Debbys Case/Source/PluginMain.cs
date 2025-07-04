@@ -15,12 +15,13 @@ namespace REPODebbysCase
     {
         internal const string modGUID = "deB.DebbysCase";
         internal const string modName = "Debbys Case";
-        internal const string modVersion = "0.0.1";
+        internal const string modVersion = "0.0.2";
         readonly Harmony harmony = new Harmony(modGUID);
         internal ManualLogSource log = null!;
         public static DebbysCase instance;
         internal DebbysCaseConfig ModConfig { get; private set; } = null!;
         public List<EnemySetup> enemiesList = new List<EnemySetup>();
+        public List<Item> itemsList = new List<Item>();
         public void Awake()
         {
             if (instance == null)
@@ -50,7 +51,7 @@ namespace REPODebbysCase
                 }
             }
             PropogateLists();
-            ModConfig = new DebbysCaseConfig(base.Config, enemiesList);
+            ModConfig = new DebbysCaseConfig(base.Config, enemiesList, itemsList);
             HandleContent();
             //DoPatches();
             log.LogInfo($"{modName} Successfully Loaded");
@@ -68,10 +69,11 @@ namespace REPODebbysCase
                     //    {
                     //        break;
                     //    }
-                    //case "assets/debbys case/resources/items":
-                    //    {
-                    //        break;
-                    //    }
+                    case "assets/debbys case/resources/items":
+                        {
+                            itemsList.Add(bundle.LoadAsset<Item>(allAssetPaths[i]));
+                            break;
+                        }
                     case "assets/debbys case/resources/enemies":
                         {
                             enemiesList.Add(bundle.LoadAsset<EnemySetup>(allAssetPaths[i]));
@@ -87,7 +89,23 @@ namespace REPODebbysCase
         }
         public void HandleContent()
         {
+            HandleItems();
             HandleEnemies();
+        }
+        public void HandleItems()
+        {
+            for (int i = 0; i < itemsList.Count; i++)
+            {
+                if (ModConfig.isItemEnabled[i].Value)
+                {
+                    REPOLib.Modules.Items.RegisterItem(itemsList[i]);
+                    log.LogDebug($"{itemsList[i].name} item was loaded!");
+                }
+                else
+                {
+                    log.LogInfo($"{itemsList[i].name} item was disabled!");
+                }
+            }
         }
         public void HandleEnemies()
         {
