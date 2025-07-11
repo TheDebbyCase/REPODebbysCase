@@ -1,10 +1,10 @@
 [config]
-schemaVersion = "0.0.2"
+schemaVersion = "0.0.3"
 
 [package]
 namespace = "deB"
 name = "Debbys_Case"
-versionNumber = "0.0.2"
+versionNumber = "0.0.3"
 description = "Adds various content supposed to fit the vibe of REPO"
 websiteUrl = "https://github.com/TheDebbyCase/REPODebbysCase"
 containsNsfwContent = false

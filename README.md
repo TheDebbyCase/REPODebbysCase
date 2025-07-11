@@ -22,7 +22,17 @@ or the GitHub page [here](https://github.com/TheDebbyCase/REPODebbysCase)!
 	![Preview](https://raw.githubusercontent.com/TheDebbyCase/REPODebbysCase/master/Images/ScavBotPreview.png)
 	
 	</details>
+
+- Items 
+	<details>
+	<summary>Player Tracker</summary>
 	
+	My own original design!  
+	A new way to keep track of things on the map
+
+	![Preview](https://raw.githubusercontent.com/TheDebbyCase/REPODebbysCase/master/Images/PlayerTrackerPreview.png)
+	
+	</details>
 
 I hope to add more soon! Make suggestions on BlueSky!
 
