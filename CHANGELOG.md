@@ -1,3 +1,6 @@
+## 0.0.4
+- Fixed Player Trackers not working properly and error spamming in some situations when equipping
+
 ## 0.0.3
 - Added Player Tracker!
 

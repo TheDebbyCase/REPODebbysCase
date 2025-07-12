@@ -25,6 +25,7 @@ namespace REPODebbysCase.Items
         public Vector3 forceRotation = new Vector3(110f, 0f, 180f);
         public PlayerTracker trackingPlayer;
         public int lastID = 0;
+        public PlayerAvatar equippingPlayer;
         public void Awake()
         {
             MotherTracker.activeTrackers.Add(this);
@@ -98,15 +99,40 @@ namespace REPODebbysCase.Items
                 Vector3 target;
                 if (trackingPlayer.itemEquippable.isEquipped)
                 {
-                    target = rotatorTransform.parent.InverseTransformPoint(trackingPlayer.physGrabObject.playerGrabbing[0].playerAvatar.transform.position);
+                    if (equippingPlayer == null)
+                    {
+                        PlayerAvatar player = null;
+                        if (SemiFunc.IsMultiplayer())
+                        {
+                            PhotonView equipperPhotonView = PhotonView.Find(trackingPlayer.itemEquippable.ownerPlayerId);
+                            if (equipperPhotonView != null)
+                            {
+                                player = equipperPhotonView.GetComponent<PlayerAvatar>();
+                                if (player == null)
+                                {
+                                    player = equipperPhotonView.GetComponent<PhysGrabber>().playerAvatar;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            player = PlayerAvatar.instance;
+                        }
+                        equippingPlayer = player;
+                    }
+                    target = rotatorTransform.parent.InverseTransformPoint(equippingPlayer.transform.position);
                 }
                 else
                 {
+                    if (equippingPlayer != null)
+                    {
+                        equippingPlayer = null;
+                    }
                     target = rotatorTransform.parent.InverseTransformPoint(trackingPlayer.rotatorTransform.position);
                 }
                 rotatorTargetRot = Mathf.Atan2(target.y, target.x) * Mathf.Rad2Deg;
                 rotatorTransform.localRotation = Quaternion.Euler(0f, 0f, rotatorTargetRot);
-                pegTargetPos = Mathf.InverseLerp(5f, 25f, Vector3.Distance(transform.position, trackingPlayer.transform.position)) * 0.8f;
+                pegTargetPos = Mathf.InverseLerp(5f, 25f, Vector3.Distance(transform.position, rotatorTransform.parent.TransformPoint(target))) * 0.8f;
                 pegTransform.localPosition = new Vector3(pegTargetPos, 0f, 0f);
             }
             trackingLoop.PlayLoop(trackingPlayer != null && physGrabObject.grabbed, 1f, 2f, Mathf.Lerp(0.5f, 4f, 0.8f - pegTargetPos));
