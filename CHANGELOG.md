@@ -1,3 +1,7 @@
+## 0.0.5
+- Made Minesweeper less trigger-happy, can no longer collect doors
+- Made some Minesweeper sound effects louder
+
 ## 0.0.4
 - Fixed Player Trackers not working properly and error spamming in some situations when equipping
 

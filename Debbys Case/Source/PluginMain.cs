@@ -15,7 +15,7 @@ namespace REPODebbysCase
     {
         internal const string modGUID = "deB.DebbysCase";
         internal const string modName = "Debbys Case";
-        internal const string modVersion = "0.0.4";
+        internal const string modVersion = "0.0.5";
         readonly Harmony harmony = new Harmony(modGUID);
         internal ManualLogSource log = null!;
         public static DebbysCase instance;

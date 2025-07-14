@@ -46,6 +46,7 @@ namespace REPODebbysCase.Enemies
         public float respawnItemsTimer = 0f;
         public int containedAmount;
         public Vector3 originalScale;
+        public float stalkAttackCooldown = 0f;
         public void Awake()
         {
             log.LogDebug("An Enemy Minesweeper has spawned!");
@@ -341,6 +342,7 @@ namespace REPODebbysCase.Enemies
         {
             if (stateImpulse)
             {
+                stalkAttackCooldown = 4f;
                 stateImpulse = false;
                 log.LogDebug("Minesweeper State: \"Stalk\"");
                 stateTimer = UnityEngine.Random.Range(7.5f, 17.5f);
@@ -436,6 +438,10 @@ namespace REPODebbysCase.Enemies
             }
             enemyBase.Vision.StandOverride(0.25f);
             stateTimer -= Time.deltaTime;
+            if (stalkAttackCooldown > 0f)
+            {
+                stalkAttackCooldown -= Time.deltaTime;
+            }
             if (stateTimer <= 0f || enemyBase.Rigidbody.touchingCartTimer > 0f || (stateTimer <= 5f && (targetPlayer != null && Vector3.Distance(enemyBase.transform.position, targetPlayer.transform.position) < 2.5f) || (targetObject != null && Vector3.Distance(enemyBase.transform.position, targetObject.transform.position) < 2.5f)))
             {
                 UpdateState(State.Attack);
@@ -581,7 +587,7 @@ namespace REPODebbysCase.Enemies
             if (SemiFunc.IsMasterClientOrSingleplayer() && currentState != State.Attack)
             {
                 log.LogDebug("Minesweeper: Touch Player");
-                if (currentState == State.Stalk)
+                if (currentState == State.Stalk && stalkAttackCooldown <= 0f)
                 {
                     UpdateState(State.Attack);
                     return;
@@ -612,9 +618,13 @@ namespace REPODebbysCase.Enemies
             if (SemiFunc.IsMasterClientOrSingleplayer() && (currentState == State.Idle || currentState == State.Roam || currentState == State.Investigate || currentState == State.Leave || currentState == State.Stalk))
             {
                 log.LogDebug("Minesweeper: Touch Player Phys");
-                if (currentState == State.Stalk && stateTimer <= 10f)
+                if (currentState == State.Stalk && stalkAttackCooldown <= 0f)
                 {
                     UpdateState(State.Attack);
+                    return;
+                }
+                if (enemyBase.Rigidbody.onTouchPlayerGrabbedObjectPhysObject.GetComponent<PhysGrabHinge>() != null)
+                {
                     return;
                 }
                 int idPlayer = -1;
@@ -630,12 +640,16 @@ namespace REPODebbysCase.Enemies
         }
         public void OnTouchPhys()
         {
-            if (SemiFunc.IsMasterClientOrSingleplayer() && (currentState == State.Roam || currentState == State.Leave || currentState == State.Stalk))
+            if (SemiFunc.IsMasterClientOrSingleplayer() && (currentState == State.Roam || currentState == State.Investigate || currentState == State.Stalk))
             {
                 log.LogDebug("Minesweeper: Touch Phys");
-                if (currentState == State.Stalk && enemyBase.Rigidbody.onTouchPhysObjectPhysObject == targetObject && stateTimer <= 10f)
+                if (currentState == State.Stalk && enemyBase.Rigidbody.onTouchPhysObjectPhysObject == targetObject && stalkAttackCooldown <= 0f)
                 {
                     UpdateState(State.Attack);
+                    return;
+                }
+                if (enemyBase.Rigidbody.onTouchPhysObjectPhysObject.GetComponent<PhysGrabHinge>() != null)
+                {
                     return;
                 }
                 int idObj = -1;
@@ -736,6 +750,10 @@ namespace REPODebbysCase.Enemies
                 for (int i = 0; i < hurtCollider.hits.Count; i++)
                 {
                     if (hurtCollider.hits[i].hitType != HurtCollider.HitType.PhysObject || !hurtCollider.hits[i].hitObject.activeSelf)
+                    {
+                        continue;
+                    }
+                    if (hurtCollider.hits[i].hitObject.GetComponent<PhysGrabHinge>() != null)
                     {
                         continue;
                     }
@@ -862,6 +880,10 @@ namespace REPODebbysCase.Enemies
             {
                 newPlayer = player;
                 newObject = physGrabObject;
+            }
+            if (newObject != null && newObject.GetComponent<PhysGrabHinge>() != null)
+            {
+                newObject = targetObject;
             }
             if (newPlayer == null)
             {
