@@ -1,3 +1,6 @@
+## 0.0.6
+- Updated to work with R.E.P.O Monster Update
+
 ## 0.0.5
 - Made Minesweeper less trigger-happy, can no longer collect doors
 - Made some Minesweeper sound effects louder

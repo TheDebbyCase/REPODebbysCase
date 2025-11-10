@@ -5,8 +5,8 @@ using System;
 using System.Reflection;
 using System.IO;
 using REPODebbysCase.Config;
-using HarmonyLib;
 using System.Collections.Generic;
+using REPOLib.Objects.Sdk;
 namespace REPODebbysCase
 {
     [BepInPlugin(modGUID, modName, modVersion)]
@@ -15,13 +15,12 @@ namespace REPODebbysCase
     {
         internal const string modGUID = "deB.DebbysCase";
         internal const string modName = "Debbys Case";
-        internal const string modVersion = "0.0.5";
-        readonly Harmony harmony = new Harmony(modGUID);
+        internal const string modVersion = "0.0.6";
         internal ManualLogSource log = null!;
         public static DebbysCase instance;
         internal DebbysCaseConfig ModConfig { get; private set; } = null!;
-        public List<EnemySetup> enemiesList = new List<EnemySetup>();
-        public List<Item> itemsList = new List<Item>();
+        public List<EnemyContent> enemiesList = new List<EnemyContent>();
+        public List<GameObject> itemsList = new List<GameObject>();
         public void Awake()
         {
             if (instance == null)
@@ -53,7 +52,6 @@ namespace REPODebbysCase
             PropogateLists();
             ModConfig = new DebbysCaseConfig(base.Config, enemiesList, itemsList);
             HandleContent();
-            //DoPatches();
             log.LogInfo($"{modName} Successfully Loaded");
         }
         public void PropogateLists()
@@ -65,18 +63,14 @@ namespace REPODebbysCase
                 string assetPath = allAssetPaths[i][..allAssetPaths[i].LastIndexOf("/")];
                 switch (assetPath)
                 {
-                    //case "assets/debbys case/resources/valuables":
-                    //    {
-                    //        break;
-                    //    }
                     case "assets/debbys case/resources/items":
                         {
-                            itemsList.Add(bundle.LoadAsset<Item>(allAssetPaths[i]));
+                            itemsList.Add(bundle.LoadAsset<GameObject>(allAssetPaths[i]));
                             break;
                         }
                     case "assets/debbys case/resources/enemies":
                         {
-                            enemiesList.Add(bundle.LoadAsset<EnemySetup>(allAssetPaths[i]));
+                            enemiesList.Add(bundle.LoadAsset<EnemyContent>(allAssetPaths[i]));
                             break;
                         }
                     default:
@@ -98,7 +92,7 @@ namespace REPODebbysCase
             {
                 if (ModConfig.isItemEnabled[i].Value)
                 {
-                    REPOLib.Modules.Items.RegisterItem(itemsList[i]);
+                    REPOLib.Modules.Items.RegisterItem(itemsList[i].GetComponent<ItemAttributes>());
                     log.LogDebug($"{itemsList[i].name} item was loaded!");
                 }
                 else
@@ -121,10 +115,6 @@ namespace REPODebbysCase
                     log.LogInfo($"{enemiesList[i].name} enemy was disabled!");
                 }
             }
-        }
-        public void DoPatches()
-        {
-            log.LogDebug("Patching Game");
         }
     }
 }

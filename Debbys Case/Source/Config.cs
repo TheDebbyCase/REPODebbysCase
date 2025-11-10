@@ -2,6 +2,8 @@
 using System.Reflection;
 using BepInEx.Configuration;
 using HarmonyLib;
+using REPOLib.Objects.Sdk;
+using UnityEngine;
 namespace REPODebbysCase.Config
 {
     public class DebbysCaseConfig
@@ -9,7 +11,7 @@ namespace REPODebbysCase.Config
         readonly BepInEx.Logging.ManualLogSource log = DebbysCase.instance.log;
         internal readonly List<ConfigEntry<bool>> isItemEnabled = new List<ConfigEntry<bool>>();
         internal readonly List<ConfigEntry<bool>> isEnemyEnabled = new List<ConfigEntry<bool>>();
-        public DebbysCaseConfig(ConfigFile cfg, List<EnemySetup> enemiesList, List<Item> itemsList)
+        public DebbysCaseConfig(ConfigFile cfg, List<EnemyContent> enemiesList, List<GameObject> itemsList)
         {
             cfg.SaveOnConfigSet = false;
             for (int i = 0; i < itemsList.Count; i++)

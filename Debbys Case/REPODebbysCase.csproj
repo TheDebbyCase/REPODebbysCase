@@ -27,16 +27,16 @@
 		<PackageReference Include="BepInEx.PluginInfoProps" Version="2.1.0" />
 		<PackageReference Include="Facepunch.Steamworks" Version="2.3.3" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="R.E.P.O.GameLibs.Steam" Version="0.2.0-ngd.0" />
+		<PackageReference Include="R.E.P.O.GameLibs.Steam" Version="0.3.0-ngd.0" />
 		<PackageReference Include="System.Collections" Version="4.3.0" />
 		<PackageReference Include="System.Collections.Immutable" Version="9.0.0" />
 		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-		<PackageReference Include="Zehs.REPOLib" Version="2.1.0" Publicize="true" />
+		<PackageReference Include="Zehs.REPOLib" Version="3.0.1" Publicize="true" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="UnityEditor">
