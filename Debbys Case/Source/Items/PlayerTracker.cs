@@ -28,6 +28,11 @@ namespace REPODebbysCase.Items
         public PlayerAvatar equippingPlayer;
         public void Awake()
         {
+            if (SemiFunc.IsMasterClientOrSingleplayer() && !SemiFunc.RunIsLevel())
+            {
+                PhotonNetwork.Destroy(gameObject);
+                return;
+            }
             MotherTracker.activeTrackers.Add(this);
             itemEquippable = GetComponent<ItemEquippable>();
             trackingNumberText.text = "X";
@@ -62,9 +67,16 @@ namespace REPODebbysCase.Items
                 currentNumbers.Add(MotherTracker.activeTrackers[i].trackerID);
             }
             int setNumber = 1;
+            int loopCount = 0;
             while (currentNumbers.Contains(setNumber))
             {
                 setNumber++;
+                loopCount++;
+                if (loopCount > currentNumbers.Count)
+                {
+                    setNumber = 1;
+                    break;
+                }
             }
             if (SemiFunc.IsMultiplayer())
             {
@@ -176,9 +188,15 @@ namespace REPODebbysCase.Items
                 {
                     next++;
                 }
+                int loopCount = 0;
                 while (!currentTrackers.Contains(next))
                 {
                     next++;
+                    if (loopCount > currentTrackers.Count)
+                    {
+                        next = lastID;
+                        break;
+                    }
                 }
             }
             if (SemiFunc.IsMultiplayer())

@@ -1,3 +1,7 @@
+## 0.0.7
+- Fixed Player Trackers showing up in the shop
+- Fixed a bug with the Player Tracker that could cause a game crash in some circumstances
+
 ## 0.0.6
 - Updated to work with R.E.P.O Monster Update
 
