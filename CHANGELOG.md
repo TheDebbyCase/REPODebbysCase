@@ -1,3 +1,6 @@
+## 0.0.9
+- Another tweak to fix the Scavbot bug
+
 ## 0.0.8
 - Tweaked Scavbot to attempt to fix a bug where it could remain active while despawned in certain situations
 

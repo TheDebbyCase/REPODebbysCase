@@ -218,7 +218,7 @@ namespace REPODebbysCase.Enemies
             {
                 stateImpulse = false;
                 log.LogDebug("Minesweeper State: \"Spawn\"");
-                visuals.localScale = originalScale;
+                SetVisualsScale(originalScale);
                 UpdateTarget(-1, -1);
                 stateTimer = 2f;
                 navAgent.Warp(rigidbody.transform.position);
@@ -667,11 +667,11 @@ namespace REPODebbysCase.Enemies
         public void OnDeath()
         {
             log.LogDebug("Minesweeper: Death");
-            visuals.localScale = Vector3.zero;
             GameDirector.instance.CameraShake.ShakeDistance(3f, 3f, 10f, base.transform.position, 0.5f);
             GameDirector.instance.CameraImpact.ShakeDistance(3f, 3f, 10f, base.transform.position, 0.05f);
             if (SemiFunc.IsMasterClientOrSingleplayer())
             {
+                SetVisualsScale(Vector3.zero);
                 enemyBase.EnemyParent.SpawnedTimerSet(0f);
                 deathLocation = transform.position + (Vector3.up / 5f);
                 containedAmount = objectContainer.Count;
@@ -679,6 +679,22 @@ namespace REPODebbysCase.Enemies
                 respawnItems = true;
                 dead = true;
             }
+        }
+        public void SetVisualsScale(Vector3 newScale)
+        {
+            if (SemiFunc.IsMultiplayer())
+            {
+                photonView.RPC("SetVisualsScaleRPC", RpcTarget.All, newScale);
+            }
+            else
+            {
+                SetVisualsScaleRPC(newScale);
+            }
+        }
+        [PunRPC]
+        public void SetVisualsScaleRPC(Vector3 newScale)
+        {
+            visuals.localScale = newScale;
         }
         public void RespawnSuckedItems()
         {
