@@ -1,3 +1,6 @@
+## 0.0.8
+- Tweaked Scavbot to attempt to fix a bug where it could remain active while despawned in certain situations
+
 ## 0.0.7
 - Fixed Player Trackers showing up in the shop
 - Fixed a bug with the Player Tracker that could cause a game crash in some circumstances

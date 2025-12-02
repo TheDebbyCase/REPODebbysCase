@@ -16,7 +16,7 @@ namespace REPODebbysCase
     {
         internal const string modGUID = "deB.DebbysCase";
         internal const string modName = "Debbys Case";
-        internal const string modVersion = "0.0.7";
+        internal const string modVersion = "0.0.8";
         internal ManualLogSource log = null!;
         public static DebbysCase instance;
         internal DebbysCaseConfig ModConfig { get; private set; } = null!;

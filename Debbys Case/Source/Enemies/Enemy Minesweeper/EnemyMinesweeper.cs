@@ -47,6 +47,7 @@ namespace REPODebbysCase.Enemies
         public int containedAmount;
         public Vector3 originalScale;
         public float stalkAttackCooldown = 0f;
+        public bool dead = false;
         public void Awake()
         {
             log.LogDebug("An Enemy Minesweeper has spawned!");
@@ -82,13 +83,13 @@ namespace REPODebbysCase.Enemies
             }
             RespawnSuckedItems();
             SelectPlayerGrabbed();
-            if (enemyBase.IsStunned())
-            {
-                UpdateState(State.Stun);
-            }
-            else if (enemyBase.CurrentState == EnemyState.Despawn)
+            if (enemyBase.CurrentState == EnemyState.Despawn)
             {
                 UpdateState(State.Despawn);
+            }
+            else if (enemyBase.IsStunned())
+            {
+                UpdateState(State.Stun);
             }
             switch (currentState)
             {
@@ -223,6 +224,7 @@ namespace REPODebbysCase.Enemies
                 navAgent.Warp(rigidbody.transform.position);
                 navAgent.ResetPath();
                 SetImpulses(340);
+                dead = false;
             }
             if (stateTimer > 0f)
             {
@@ -268,11 +270,7 @@ namespace REPODebbysCase.Enemies
                 log.LogDebug("Minesweeper State: \"Roam\"");
                 UpdateTarget(-1, -1);
                 stateTimer = UnityEngine.Random.Range(7.5f, 15f);
-                LevelPoint nextLocation = SemiFunc.LevelPointGet(enemyBase.transform.position, 7.5f, 30f);
-                if (nextLocation == null)
-                {
-                    nextLocation = SemiFunc.LevelPointGet(enemyBase.transform.position, 0f, float.MaxValue);
-                }
+                LevelPoint nextLocation = SemiFunc.LevelPointGet(enemyBase.transform.position, 7.5f, 30f) ?? SemiFunc.LevelPointGet(enemyBase.transform.position, 0f, float.MaxValue);
                 if (NavMesh.SamplePosition(nextLocation.transform.position + UnityEngine.Random.insideUnitSphere * 3f, out var hit, 5f, -1) && Physics.Raycast(hit.position, Vector3.down, 5f, LayerMask.GetMask("Default")))
                 {
                     newPosition = hit.position;
@@ -515,7 +513,7 @@ namespace REPODebbysCase.Enemies
                 navAgent.Warp(rigidbody.transform.position);
                 SetImpulses(340);
             }
-            if (!enemyBase.IsStunned())
+            else if (!enemyBase.IsStunned())
             {
                 UpdateState(State.Idle);
             }
@@ -529,6 +527,7 @@ namespace REPODebbysCase.Enemies
                 UpdateTarget(-1, -1);
                 SetImpulses(340);
                 stateImpulse = false;
+                dead = true;
             }
         }
         public void OnSpawn()
@@ -678,6 +677,7 @@ namespace REPODebbysCase.Enemies
                 containedAmount = objectContainer.Count;
                 objectContainer.Shuffle();
                 respawnItems = true;
+                dead = true;
             }
         }
         public void RespawnSuckedItems()
