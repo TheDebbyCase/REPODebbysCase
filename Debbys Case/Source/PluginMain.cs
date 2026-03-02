@@ -7,7 +7,6 @@ using System.IO;
 using REPODebbysCase.Config;
 using System.Collections.Generic;
 using REPOLib.Objects.Sdk;
-using REPODebbysCase.Utilities;
 namespace REPODebbysCase
 {
     [BepInPlugin(modGUID, modName, modVersion)]
@@ -16,11 +15,10 @@ namespace REPODebbysCase
     {
         internal const string modGUID = "deB.DebbysCase";
         internal const string modName = "Debbys Case";
-        internal const string modVersion = "0.0.9";
+        internal const string modVersion = "0.1.0";
         internal ManualLogSource log = null!;
         public static DebbysCase instance;
         internal DebbysCaseConfig ModConfig { get; private set; } = null!;
-        public Utils utils;
         public List<EnemyContent> enemiesList = new List<EnemyContent>();
         public List<GameObject> itemsList = new List<GameObject>();
         public void Awake()
@@ -29,7 +27,6 @@ namespace REPODebbysCase
             {
                 instance = this;
             }
-            utils = new Utils();
             log = Logger;
             Type[] assemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
             for (int i = 0; i < assemblyTypes.Length; i++)

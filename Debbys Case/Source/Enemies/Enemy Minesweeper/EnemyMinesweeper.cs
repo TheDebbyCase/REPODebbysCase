@@ -528,6 +528,7 @@ namespace REPODebbysCase.Enemies
                 SetImpulses(340);
                 stateImpulse = false;
                 dead = true;
+                enemyBase.EnemyParent.Despawn();
             }
         }
         public void OnSpawn()
@@ -672,7 +673,7 @@ namespace REPODebbysCase.Enemies
             if (SemiFunc.IsMasterClientOrSingleplayer())
             {
                 SetVisualsScale(Vector3.zero);
-                enemyBase.EnemyParent.SpawnedTimerSet(0f);
+                enemyBase.EnemyParent.Despawn();
                 deathLocation = transform.position + (Vector3.up / 5f);
                 containedAmount = objectContainer.Count;
                 objectContainer.Shuffle();
@@ -770,6 +771,10 @@ namespace REPODebbysCase.Enemies
                         continue;
                     }
                     if (hurtCollider.hits[i].hitObject.GetComponent<PhysGrabHinge>() != null)
+                    {
+                        continue;
+                    }
+                    if (hurtCollider.hits[i].hitObject.GetComponent<PlayerDeathHead>() != null)
                     {
                         continue;
                     }

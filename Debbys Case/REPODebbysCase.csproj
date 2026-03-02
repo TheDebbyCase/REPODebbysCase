@@ -36,7 +36,7 @@
 		<PackageReference Include="System.Collections" Version="4.3.0" />
 		<PackageReference Include="System.Collections.Immutable" Version="9.0.0" />
 		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-		<PackageReference Include="Zehs.REPOLib" Version="3.0.1" Publicize="true" />
+		<PackageReference Include="Zehs.REPOLib" Version="3.0.3" Publicize="true" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="UnityEditor">

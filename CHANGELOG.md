@@ -1,3 +1,6 @@
+## 0.1.0
+- Maybe this is the tweak that fixes the Scavbot bugs
+
 ## 0.0.9
 - Another tweak to fix the Scavbot bug
 
